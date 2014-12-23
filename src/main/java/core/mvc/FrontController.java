@@ -38,9 +38,7 @@ public class FrontController extends HttpServlet {
 		ModelAndView mav;
 		try {
 			mav = controller.execute(req, resp);
-			System.out.println("null");
 			if (mav != null) {
-				System.out.println("not null");
 				View view = mav.getView();
 				view.render(mav.getModel(), req, resp);
 			}
