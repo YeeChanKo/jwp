@@ -16,15 +16,16 @@ import org.slf4j.LoggerFactory;
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory.getLogger(FrontController.class);
-	
+
 	private static final String DEFAULT_REDIRECT_PREFIX = "redirect:";
 	private static final String DEFAULT_API_PREFIX = "api";
-	
+
 	private RequestMapping rm;
 
 	@Override
 	public void init() throws ServletException {
-		rm = (RequestMapping)getServletContext().getAttribute(ServletContextLoader.DEFAULT_REQUEST_MAPPING);
+		rm = (RequestMapping) getServletContext().getAttribute(
+				ServletContextLoader.DEFAULT_REQUEST_MAPPING);
 	}
 
 	@Override
@@ -32,40 +33,44 @@ public class FrontController extends HttpServlet {
 			throws ServletException, IOException {
 		String requestUri = req.getRequestURI();
 		logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
-		
+
 		Controller controller = rm.findController(urlExceptParameter(req.getRequestURI()));
 		ModelAndView mav;
 		try {
 			mav = controller.execute(req, resp);
-			View view = mav.getView();
-			view.render(mav.getModel(), req, resp);
+			System.out.println("null");
+			if (mav != null) {
+				System.out.println("not null");
+				View view = mav.getView();
+				view.render(mav.getModel(), req, resp);
+			}
 		} catch (Throwable e) {
 			logger.error("Exception : {}", e);
 			throw new ServletException(e.getMessage());
 		}
 	}
 
-	void movePage(HttpServletRequest req, HttpServletResponse resp,
-			String viewName) throws ServletException, IOException {
+	void movePage(HttpServletRequest req, HttpServletResponse resp, String viewName)
+			throws ServletException, IOException {
 		if (viewName.startsWith(DEFAULT_API_PREFIX)) {
 			return;
 		}
-		
+
 		if (viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
 			resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
 			return;
 		}
-		
+
 		RequestDispatcher rd = req.getRequestDispatcher(viewName);
 		rd.forward(req, resp);
 	}
-	
+
 	String urlExceptParameter(String forwardUrl) {
 		int index = forwardUrl.indexOf("?");
 		if (index > 0) {
 			return forwardUrl.substring(0, index);
 		}
-		
+
 		return forwardUrl;
 	}
 }

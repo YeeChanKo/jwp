@@ -16,6 +16,7 @@ public class JsonView implements View {
 		Gson gson = new Gson();
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
+		System.out.println(gson.toJson(model));
 		out.print(gson.toJson(model));
 	}
 

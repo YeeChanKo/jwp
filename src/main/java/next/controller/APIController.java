@@ -13,12 +13,11 @@ import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import core.utils.ServletRequestUtils;
 
-public class ShowController extends AbstractController {
+public class APIController extends AbstractController {
 
 	@Override
 	public ModelAndView execute(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// 인스턴스 변수를 지역 변수로 만들어 thread-safe하게 해준다.
 		QuestionDao questionDao = new QuestionDao();
 		AnswerDao answerDao = new AnswerDao();
 		Question question;
@@ -27,7 +26,7 @@ public class ShowController extends AbstractController {
 
 		question = questionDao.findById(questionId);
 		answers = answerDao.findAllByQuestionId(questionId);
-		ModelAndView mav = jstlView("show.jsp");
+		ModelAndView mav = jsonView();
 		mav.addObject("question", question);
 		mav.addObject("answers", answers);
 
