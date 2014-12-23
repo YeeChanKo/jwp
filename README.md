@@ -1,7 +1,7 @@
 2014년 개발 경험 프로젝트
 =========
 
-# 질문 목록 보이기까지의 설명
+### 질문 목록 보이기까지의 설명
 1. next.WebServerLauncher를 java application으로 실행시킨다. tomcat 서블릿 컨테이너가 서버와 연동이 되어 실행된다.
 2. 클라이언트가 처음 http://localhost:8080/list.next에 접근하면, @WebServlet("*.next")으로 요청을 받는 FrontController의 인스턴스가 생성되어 실행된다.
 3. 처음에 init() 실행되고 request mapping 해주는 rm 값을 ServletContextLoader에 담겨있는 DEFAULT_REQUEST_MAPPING으로 초기화해준다. ServletContextLoader의 contextInitialized()가 실행되면서 request mapping의 initMapping()을 해준다. JwpContextLoaderListender의 contextInitialized()도 실행되면서 데이터베이스 설정을 초기화해준다.
